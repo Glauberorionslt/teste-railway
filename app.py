@@ -1,5 +1,6 @@
 import sqlite3
 import streamlit as st
+import pandas as pd
 
 # Criar tabela no banco de dados
 def criar_tabela():
@@ -25,17 +26,35 @@ def adicionar_usuario(nome, email):
     conn.close()
     st.success('Usuário adicionado com sucesso!')
 
+# Obter todos os usuários
+def obter_usuarios():
+    conn = sqlite3.connect('usuarios.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM Usuario')
+    usuarios = cursor.fetchall()
+    conn.close()
+    return usuarios
+
 # Streamlit
-st.title('Adicionar Usuário')
+st.title('Gerenciar Usuários')
+
+# Botão para criar tabela
+if st.button('Criar Tabela'):
+    criar_tabela()
 
 # Formulário para adicionar usuário
 nome = st.text_input('Nome do usuário')
 email = st.text_input('Email do usuário')
 
-# Botão para criar tabela
-# if st.button('Criar Tabela'):
-#     criar_tabela()
-
 # Botão para adicionar usuário
 if st.button('Adicionar Usuário'):
     adicionar_usuario(nome, email)
+
+# Listar usuários em uma tabela
+usuarios = obter_usuarios()
+if usuarios:
+    st.title('Lista de Usuários')
+    df = pd.DataFrame(usuarios, columns=['ID', 'Nome', 'Email'])
+    st.dataframe(df)
+else:
+    st.info('Nenhum usuário encontrado.')

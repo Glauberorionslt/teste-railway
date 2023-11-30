@@ -39,8 +39,8 @@ def obter_usuarios():
 st.title('Gerenciar Usuários')
 
 # Botão para criar tabela
-if st.button('Criar Tabela'):
-    criar_tabela()
+# if st.button('Criar Tabela'):
+#     criar_tabela()
 
 # Formulário para adicionar usuário
 nome = st.text_input('Nome do usuário')
